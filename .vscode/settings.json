@@ -4,7 +4,7 @@
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.organizeImports": "always",
-      "source.unusedImports": "never"
+      "source.unusedImports": "always"
     }
   },
   "terminal.integrated.env.windows": {

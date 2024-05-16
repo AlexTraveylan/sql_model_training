@@ -1,14 +1,18 @@
 import contextlib
 from typing import Optional
 
-from pydantic import PositiveInt
+from pydantic import ConfigDict, PositiveInt
 from sqlalchemy import create_engine
 from sqlmodel import Field, Session, SQLModel
 
 from app.adapter.exception.app_exception import AppException
 
 
-class Personage(SQLModel, table=True):
+class BaseSQLModel(SQLModel):
+    model_config = ConfigDict(validate_assignment=True)
+
+
+class Personage(BaseSQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(max_length=20, min_length=2)
     age: PositiveInt
@@ -31,6 +35,6 @@ def unit():
         session.commit()
     except Exception as e:
         session.rollback()
-        raise AppException("Rolling back") from e
+        raise AppException(f"Rolling back, cause : {str(e)}") from e
     finally:
         session.close()
